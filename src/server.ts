@@ -23,6 +23,7 @@ const App = ():Promise<Express> => {
           app.use(bodyParser.json()); //use body-parser module
           app.use(bodyParser.urlencoded({ extended: true })); //take the parmetrs from the url
           //connect the routes of user-route to the app.js
+          app.use(express.json());
           app.use("/user", userRoute);
           resolve(app);
         }) //connect to the database
