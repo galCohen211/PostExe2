@@ -19,4 +19,13 @@ router.post(
   userController.signup
 );
 
+router.post(
+    "/login",[
+        check("email").isEmail().withMessage("Please enter a valid email address").normalizeEmail(),
+        check("password").notEmpty().withMessage("Password is required")
+    ],
+    userController.login
+);
+
+
 export default router;

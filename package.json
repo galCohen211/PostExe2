@@ -13,6 +13,7 @@
   "author": "Gal Cohen & Oriya Pelossof",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.1",
     "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.2",
