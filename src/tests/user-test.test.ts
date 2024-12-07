@@ -95,5 +95,12 @@ describe("All user test", () => {
     expect(response.body.message).toBe("Password is incorrect");
   });
 
+  //Logout tests
+  test("Logout", async ()=>{
+    const response = await request(app).post("/user/logout");
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("You are logged out");
+  });
+
 
 })

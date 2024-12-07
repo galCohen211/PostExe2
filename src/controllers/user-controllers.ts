@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import user from "../models/user-model";
 
-//logout
-
 //Signup
 class userController {
   static async signup(req: Request, res: Response): Promise<void> {
@@ -50,6 +48,15 @@ class userController {
 
             res.status(200).json({message: "You are logged in", user: userLogin});
 
+        }catch(error){
+            res.status(400).json({message: error});
+        }
+    }
+
+    //Logout
+    static async logout(req: Request, res: Response): Promise<void> {
+        try{
+            res.status(200).json({message: "You are logged out"});
         }catch(error){
             res.status(400).json({message: error});
         }
