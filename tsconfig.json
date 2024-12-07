@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "strict": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist", //all files of js will be created in dist folder
+    "rootDir": "./src" 
+    },
+    "lib": ["es2015"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist"]
+}
+   
