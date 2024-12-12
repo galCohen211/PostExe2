@@ -38,7 +38,7 @@ const usernameExist = {
 describe("All user test", () => {
   //Signup tests
     test("Create a new user", async ()=>{
-      const response = await request(app).post("/user/signup").send(user);    
+      const response = await request(app).post("/auth/signup").send(user);    
       expect(response.status).toBe(201);
       expect(response.body.user.email).toBe("gal@gmail.com");
       expect(response.body.user.username).toBe("gal");
@@ -47,18 +47,18 @@ describe("All user test", () => {
   });
 
   test("Create a new user with missing fields", async ()=>{
-    const response = await request(app).post("/user/signup").send(invalidUser);    
+    const response = await request(app).post("/auth/signup").send(invalidUser);    
     expect(response.status).toBe(400);
   });
 
   test("Create a new user that the email already exists", async ()=>{
-    const response = await request(app).post("/user/signup").send(user);    
+    const response = await request(app).post("/auth/signup").send(user);    
     expect(response.status).toBe(400);
     expect(response.body.message).toBe("Email already exists");
   });
 
   test("Create a new user that the username already exists", async ()=>{
-    const response = await request(app).post("/user/signup").send(usernameExist);    
+    const response = await request(app).post("/auth/signup").send(usernameExist);    
     expect(response.status).toBe(400);
     expect(response.body.message).toBe("Username already exists");
   });
@@ -66,7 +66,7 @@ describe("All user test", () => {
   //Login tests
 
   test("Login with exist user", async ()=>{
-    const response = await request(app).post("/user/login").send({
+    const response = await request(app).post("/auth/login").send({
         email: "gal@gmail.com",
         password: "123456"
     })
@@ -78,7 +78,7 @@ describe("All user test", () => {
   });
 
   test("Login with not exist user", async ()=>{
-    const response = await request(app).post("/user/login").send({
+    const response = await request(app).post("/auth/login").send({
         email: "gal1111@gmail.com",
         password: "123456"
       })
@@ -87,7 +87,7 @@ describe("All user test", () => {
   });
 
   test ("Login with wrong password", async ()=>{
-    const response = await request(app).post("/user/login").send({
+    const response = await request(app).post("/auth/login").send({
         email: "gal@gmail.com",
         password: "1234567"
     })
