@@ -67,7 +67,7 @@ describe("All user test", () => {
 
   test("Login with exist user", async ()=>{
     const response = await request(app).post("/auth/login").send({
-        email: "gal@gmail.com",
+        username: "gal",
         password: "123456"
     })
     expect(response.status).toBe(200); 
@@ -79,20 +79,20 @@ describe("All user test", () => {
 
   test("Login with not exist user", async ()=>{
     const response = await request(app).post("/auth/login").send({
-        email: "gal1111@gmail.com",
+        username: "gal1111@gmail.com",
         password: "123456"
       })
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe("User not found");
+      expect(response.body.message).toBe("Incorrect email or password, please try again");
   });
 
   test ("Login with wrong password", async ()=>{
     const response = await request(app).post("/auth/login").send({
-        email: "gal@gmail.com",
+        username: "gal",
         password: "1234567"
     })
     expect(response.status).toBe(400);
-    expect(response.body.message).toBe("Password is incorrect");
+    expect(response.body.message).toBe("Incorrect email or password, please try again");
   });
 
   //Logout tests

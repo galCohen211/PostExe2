@@ -6,7 +6,7 @@ App()
 .then((app) =>{
   app.listen(port, () => {
     //brings up the server
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`app listening at http://localhost:${port}`);
   });
 }).catch(()=>{
   console.log("Error Fail starting the server");
