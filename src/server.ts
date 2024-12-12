@@ -1,8 +1,10 @@
-import express, {Express} from "express"; //import express module
-const app = express(); //make express work
-import dotenv from "dotenv"; //allows to use dotenv
+import express, {Express} from "express"; 
+const app = express(); 
+import dotenv from "dotenv"; 
 dotenv.config(); //use dotenv
-import bodyParser from "body-parser"; //import body-parser module
+import bodyParser from "body-parser"; 
+import userRoute from "./routes/user-route"; 
+import commentRoute from "./routes/comment-route"; 
 
 
 import mongoose from "mongoose"; //import mongoose module
@@ -21,7 +23,10 @@ const App = ():Promise<Express> => {
         .then(() => {
           app.use(bodyParser.json()); //use body-parser module
           app.use(bodyParser.urlencoded({ extended: true })); //take the parmetrs from the url
-          //connect the routes of posts to the app.js
+          //connect the routes of user-route to the app.js
+          app.use(express.json());
+          app.use("/user", userRoute);
+          app.use("/comment", commentRoute);
           resolve(app);
         }) //connect to the database
         .catch((error) => {
@@ -37,6 +42,6 @@ app.get("/about", (req, res) => {
 });
 
 
-export default App; //export initApp function
+export default App; 
 
 
