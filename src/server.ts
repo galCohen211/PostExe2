@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import express, {Express} from "express"; //import express module
 import session from "express-session";
 const app = express(); //make express work
@@ -6,6 +7,15 @@ dotenv.config(); //use dotenv
 import bodyParser from "body-parser"; //import body-parser module
 import userRoute from "./routes/user-route"; //import user-route module
 import authRoute from "./routes/auth-route"; //import auth-route module
+=======
+import express, {Express} from "express"; 
+const app = express(); 
+import dotenv from "dotenv"; 
+dotenv.config(); //use dotenv
+import bodyParser from "body-parser"; 
+import userRoute from "./routes/user-route"; 
+import commentRoute from "./routes/comment-route"; 
+>>>>>>> 6305988a16d38d32029dea420d43bde00faf5719
 
 
 import mongoose from "mongoose"; //import mongoose module
@@ -27,6 +37,7 @@ const App = ():Promise<Express> => {
           //connect the routes of user-route to the app.js
           app.use(express.json());
           app.use("/user", userRoute);
+<<<<<<< HEAD
           app.use("/auth", authRoute);
           app.use(
             session({
@@ -36,6 +47,9 @@ const App = ():Promise<Express> => {
               cookie: { secure: false },   // Set 'true' if using HTTPS
             })
           );
+=======
+          app.use("/comment", commentRoute);
+>>>>>>> 6305988a16d38d32029dea420d43bde00faf5719
           resolve(app);
         }) //connect to the database
         .catch((error) => {
@@ -51,6 +65,6 @@ app.get("/about", (req, res) => {
 });
 
 
-export default App; //export initApp function
+export default App; 
 
 
