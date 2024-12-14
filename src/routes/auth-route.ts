@@ -19,12 +19,12 @@ router.post(
     authController.signup
   );
   
-  router.post(
-      "/login",[
-          check("username").notEmpty().withMessage("Please enter a valid username"),
-          check("password").notEmpty().withMessage("Password is required")
-      ],
-      authController.login
-  );
+router.post(
+    "/login",[
+        check("username").notEmpty().withMessage("Please enter a valid username"),
+        check("password").notEmpty().withMessage("Password is required")
+    ],
+    authController.login
+);
 
 export default router;

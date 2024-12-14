@@ -5,6 +5,8 @@ import userModel from "../models/user-model";
 import { Express } from "express";
 
 let app: Express;
+let accessToken = '';
+let refreshToken = '';
 
 beforeAll(async () => {
   app = await App();
@@ -38,7 +40,8 @@ const usernameExist = {
 describe("All user test", () => {
   //Signup tests
     test("Create a new user", async ()=>{
-      const response = await request(app).post("/auth/signup").send(user);    
+      const response = await request(app).post("/auth/signup").send(user);
+      console.log(response);
       expect(response.status).toBe(201);
       expect(response.body.user.email).toBe("gal@gmail.com");
       expect(response.body.user.username).toBe("gal");
@@ -70,11 +73,9 @@ describe("All user test", () => {
         username: "gal",
         password: "123456"
     })
-    expect(response.status).toBe(200); 
-    expect(response.body.user.email).toBe("gal@gmail.com");
-    expect(response.body.user.username).toBe("gal");  
-    expect(response.body.user.firstName).toBe("Gal");
-    expect(response.body.user.lastName).toBe("Cohen");
+    expect(response.status).toBe(200);
+    accessToken = response.body.accessToken;
+    refreshToken = response.body.refreshToken;
   });
 
   test("Login with not exist user", async ()=>{
@@ -101,6 +102,4 @@ describe("All user test", () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("You are logged out");
   });
-
-
 })

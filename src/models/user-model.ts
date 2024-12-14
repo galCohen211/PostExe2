@@ -6,7 +6,8 @@ interface iUser extends Document {
   username: string;
   password: string;
   firstName: string;
-  lastName: string
+  lastName: string;
+  tokens: [String];
 }
 
 const UserSchema: Schema<iUser> = new mongoose.Schema({
@@ -15,6 +16,7 @@ const UserSchema: Schema<iUser> = new mongoose.Schema({
   password: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  tokens: { type: [String]}
 });
 
 const User: Model<iUser> = mongoose.model<iUser>("User", UserSchema);
