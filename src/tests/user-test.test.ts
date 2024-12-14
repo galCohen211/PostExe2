@@ -98,8 +98,8 @@ describe("All user test", () => {
 
   //Logout tests
   test("Logout", async ()=>{
-    const response = await request(app).post("/user/logout");
+    const response = await request(app).post("/auth/logout").set('Authorization', 'JWT ' + refreshToken);
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("You are logged out");
+    expect(response.body.message).toBe("Logout successful");
   });
 })

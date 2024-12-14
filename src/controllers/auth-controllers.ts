@@ -158,7 +158,6 @@ static async login(req: Request, res: Response): Promise<void> {
     };
   }
   static async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
-
   try {
     const authHeaders = req.headers['authorization'];
     const token = (authHeaders && authHeaders.split(' ')[1]) as string;
@@ -173,7 +172,7 @@ static async login(req: Request, res: Response): Promise<void> {
       process.env.REFRESH_TOKEN_SECRET as string,
       async (err, userInfo: any) => {
         if (err) {
-          return res.status(403).send(err.message); // Forbidden: Invalid or expired token
+          return res.status(400).send(err.message); // Forbidden: Invalid or expired token
         }
 
         const userId = userInfo._id;
@@ -182,7 +181,7 @@ static async login(req: Request, res: Response): Promise<void> {
           // Find the user by ID
           const user = await userModel.findById(userId);
           if (!user) {
-            return res.status(403).send('Invalid request: User not found');
+            return res.status(401).send('Invalid request: User not found');
           }
 
           // Check if the token exists in user's tokens array
@@ -199,7 +198,7 @@ static async login(req: Request, res: Response): Promise<void> {
           return res.status(200).send({ message: 'Logout successful' });
         } catch (err) {
           console.error('Error during logout:', err);
-          return res.status(403).send(err);
+          return res.status(405).send(err);
         }
       }
     );
