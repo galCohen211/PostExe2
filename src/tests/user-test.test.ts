@@ -41,7 +41,6 @@ describe("All user test", () => {
   //Signup tests
     test("Create a new user", async ()=>{
       const response = await request(app).post("/auth/signup").send(user);
-      console.log(response);
       expect(response.status).toBe(201);
       expect(response.body.user.email).toBe("gal@gmail.com");
       expect(response.body.user.username).toBe("gal");
