@@ -7,6 +7,7 @@ import bodyParser from "body-parser"; //import body-parser module
 import userRoute from "./routes/user-route"; //import user-route module
 import commentRoute from "./routes/comment-route";
 import authRoute from "./routes/auth-route"; //import auth-route module
+import postRoute from "./routes/post-route"; //import auth-route module
 
 
 import mongoose from "mongoose"; //import mongoose module
@@ -30,6 +31,7 @@ const App = ():Promise<Express> => {
           app.use("/user", userRoute);
           app.use("/comment", commentRoute);
           app.use("/auth", authRoute);
+          app.use("/post", postRoute);
           app.use(
             session({
               secret: "yourSessionSecret", // Used to sign session ID cookies

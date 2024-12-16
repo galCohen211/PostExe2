@@ -208,4 +208,33 @@ static async login(req: Request, res: Response): Promise<void> {
   }
 }
 }
+type TokenPayload = {
+  _id: string;
+};
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+      res.status(401).send("Token not found");
+      return;
+  }
+
+  if (process.env.TOKEN_SECRET == null) {
+      res.status(400).send("missing auth configuration");
+      return;
+  }
+const token_secret = process.env.TOKEN_SECRET || "DEFAULTSECRETKEY";
+
+  jwt.verify(token, token_secret, (err, data) => {
+      if (err) {
+          res.status(403).send("token is invalid");
+          return;
+      }
+      const payload = data as TokenPayload;
+      req.query.userId = payload._id;
+      next();
+  });
+};
+
 export default authController;
