@@ -40,7 +40,7 @@ class commentController {
     }
 
     static async getCommentById(req: Request, res: Response): Promise<void> {
-        const commentId = req.params;
+        const commentId = req.params.id;
          try{
             const commentById = await comment.findById(commentId);
             res.status(200).json({commentById});
@@ -53,10 +53,10 @@ class commentController {
     }
 
     static async updateComment(req: Request, res: Response): Promise<void> {
-        const id = req.params;
-        const connect  = req.body;
+        const id = req.params.id;
+        const content  = req.body;
         try{
-            const updateContent = await comment.findByIdAndUpdate(id, connect, {new: true});  
+            const updateContent = await comment.findByIdAndUpdate(id, content, {new: true});  
             res.status(200).json({message:"Comment updated" ,updateContent});
         }catch(error){
             res.status(400).json({message: error});
@@ -65,7 +65,7 @@ class commentController {
     }
 
     static async deleteComment(req: Request, res: Response): Promise<void> {
-        const id = req.params;
+        const id = req.params.id;
         try{
             const deleteComment =   await comment.findByIdAndDelete(id);
             res.status(200).json({message:"Comment deleted", deleteComment});
