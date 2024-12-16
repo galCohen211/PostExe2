@@ -5,6 +5,8 @@ import userModel from "../models/user-model";
 import { Express } from "express";
 
 let app: Express;
+let accessToken = '';
+let refreshToken = '';
 
 beforeAll(async () => {
   app = await App();
@@ -38,7 +40,7 @@ const usernameExist = {
 describe("All user test", () => {
   //Signup tests
     test("Create a new user", async ()=>{
-      const response = await request(app).post("/user/signup").send(user);    
+      const response = await request(app).post("/auth/signup").send(user);
       expect(response.status).toBe(201);
       expect(response.body.user.email).toBe("gal@gmail.com");
       expect(response.body.user.username).toBe("gal");
@@ -47,18 +49,18 @@ describe("All user test", () => {
   });
 
   test("Create a new user with missing fields", async ()=>{
-    const response = await request(app).post("/user/signup").send(invalidUser);    
+    const response = await request(app).post("/auth/signup").send(invalidUser);    
     expect(response.status).toBe(400);
   });
 
   test("Create a new user that the email already exists", async ()=>{
-    const response = await request(app).post("/user/signup").send(user);    
+    const response = await request(app).post("/auth/signup").send(user);    
     expect(response.status).toBe(400);
     expect(response.body.message).toBe("Email already exists");
   });
 
   test("Create a new user that the username already exists", async ()=>{
-    const response = await request(app).post("/user/signup").send(usernameExist);    
+    const response = await request(app).post("/auth/signup").send(usernameExist);    
     expect(response.status).toBe(400);
     expect(response.body.message).toBe("Username already exists");
   });
@@ -66,41 +68,37 @@ describe("All user test", () => {
   //Login tests
 
   test("Login with exist user", async ()=>{
-    const response = await request(app).post("/user/login").send({
-        email: "gal@gmail.com",
+    const response = await request(app).post("/auth/login").send({
+        username: "gal",
         password: "123456"
     })
-    expect(response.status).toBe(200); 
-    expect(response.body.user.email).toBe("gal@gmail.com");
-    expect(response.body.user.username).toBe("gal");  
-    expect(response.body.user.firstName).toBe("Gal");
-    expect(response.body.user.lastName).toBe("Cohen");
+    expect(response.status).toBe(200);
+    accessToken = response.body.accessToken;
+    refreshToken = response.body.refreshToken;
   });
 
   test("Login with not exist user", async ()=>{
-    const response = await request(app).post("/user/login").send({
-        email: "gal1111@gmail.com",
+    const response = await request(app).post("/auth/login").send({
+        username: "gal1111@gmail.com",
         password: "123456"
       })
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe("User not found");
+      expect(response.body.message).toBe("Incorrect email or password, please try again");
   });
 
   test ("Login with wrong password", async ()=>{
-    const response = await request(app).post("/user/login").send({
-        email: "gal@gmail.com",
+    const response = await request(app).post("/auth/login").send({
+        username: "gal",
         password: "1234567"
     })
     expect(response.status).toBe(400);
-    expect(response.body.message).toBe("Password is incorrect");
+    expect(response.body.message).toBe("Incorrect email or password, please try again");
   });
 
   //Logout tests
   test("Logout", async ()=>{
-    const response = await request(app).post("/user/logout");
+    const response = await request(app).post("/auth/logout").set('Authorization', 'JWT ' + refreshToken);
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("You are logged out");
+    expect(response.body.message).toBe("Logout successful");
   });
-
-
 })

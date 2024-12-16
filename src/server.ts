@@ -1,10 +1,12 @@
-import express, {Express} from "express"; 
-const app = express(); 
-import dotenv from "dotenv"; 
+import express, {Express} from "express"; //import express module
+import session from "express-session";
+const app = express(); //make express work
+import dotenv from "dotenv"; //allows to use dotenv
 dotenv.config(); //use dotenv
-import bodyParser from "body-parser"; 
-import userRoute from "./routes/user-route"; 
-import commentRoute from "./routes/comment-route"; 
+import bodyParser from "body-parser"; //import body-parser module
+import userRoute from "./routes/user-route"; //import user-route module
+import commentRoute from "./routes/comment-route";
+import authRoute from "./routes/auth-route"; //import auth-route module
 
 
 import mongoose from "mongoose"; //import mongoose module
@@ -27,6 +29,15 @@ const App = ():Promise<Express> => {
           app.use(express.json());
           app.use("/user", userRoute);
           app.use("/comment", commentRoute);
+          app.use("/auth", authRoute);
+          app.use(
+            session({
+              secret: "yourSessionSecret", // Used to sign session ID cookies
+              resave: false,               // Avoid resaving unchanged sessions
+              saveUninitialized: false,    // Don't save uninitialized sessions
+              cookie: { secure: false },   // Set 'true' if using HTTPS
+            })
+          );
           resolve(app);
         }) //connect to the database
         .catch((error) => {
