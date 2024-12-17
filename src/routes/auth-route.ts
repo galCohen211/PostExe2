@@ -1,7 +1,13 @@
 import express from "express";
 const router = express.Router();
 import { check } from "express-validator"; //import express-validator module
-import authController from "../controllers/auth-controllers";
+import authController, {authMiddleware} from "../controllers/auth-controllers";
+
+router.delete("/:id", authMiddleware, authController.deleteUser);
+
+router.put("/:id", authMiddleware, authController.updateUser);
+
+router.get("/:id", authController.getUser);
 
 //Signup user
 router.post(
@@ -31,5 +37,6 @@ router.post(
   "/logout",
   authController.logout
 );
+
 
 export default router;

@@ -25,6 +25,14 @@ const user = {
   lastName: "Cohen"
 }
 
+const user1 = {
+  email: "liad@gmail.com",
+  username: "liad",
+  password: "1q2w3e4r",
+  firstName: "Liad",
+  lastName: "Cohen"
+}
+
 const invalidUser = {
   username: "gal"
 }
@@ -37,15 +45,23 @@ const usernameExist = {
   lastName: "Cohen"
 }
 
+const updatedUserData = {
+  firstName: "UpdatedGal",
+  lastName: "UpdatedCohen",
+};
+
+let _id ="";
+
 describe("All user test", () => {
   //Signup tests
     test("Create a new user", async ()=>{
       const response = await request(app).post("/auth/signup").send(user);
       expect(response.status).toBe(201);
-      expect(response.body.user.email).toBe("gal@gmail.com");
-      expect(response.body.user.username).toBe("gal");
-      expect(response.body.user.firstName).toBe("Gal");
-      expect(response.body.user.lastName).toBe("Cohen");
+      expect(response.body.user.email).toBe(user.email);
+      expect(response.body.user.username).toBe(user.username);
+      expect(response.body.user.firstName).toBe(user.firstName);
+      expect(response.body.user.lastName).toBe(user.lastName);
+      _id = response.body.user._id;
   });
 
   test("Create a new user with missing fields", async ()=>{
@@ -101,4 +117,100 @@ describe("All user test", () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Logout successful");
   });
+
+// Update user tests
+test("Update user", async () => {
+  const updatedUserData = {
+    email: "gal@gmail.com",
+    username: "gal",
+    firstName: "UpdatedGal",
+    lastName: "UpdatedCohen",
+    password: "123456",
+  };
+
+  const response = await request(app)
+    .put(`/auth/${_id}`)       
+    .set('Authorization', 'JWT ' + accessToken)
+    .send(updatedUserData);
+
+  expect(response.status).toBe(200);
+  expect(response.body.user.firstName).toBe("UpdatedGal");
+  expect(response.body.user.lastName).toBe("UpdatedCohen");
+});
+
+test("Update user without authorization", async () => {
+
+  const response = await request(app)
+    .put(`/auth/${_id}`)      
+    .send(updatedUserData);
+
+  expect(response.status).toBe(401);      
+});
+
+test("Update user with invalid fields", async () => {
+  const invalidUpdateData = {
+    firstName: "",
+    lastName: "UpdatedCohen",
+  };
+
+  const response = await request(app)
+    .put(`/auth/${_id}`)      
+    .set('Authorization', 'JWT ' + accessToken)
+    .send(invalidUpdateData);
+
+  expect(response.status).toBe(400);  
+});
+
 })
+
+
+
+test("Create another new user", async ()=>{
+  const response = await request(app).post("/auth/signup").send(user1);
+  expect(response.status).toBe(201);
+  expect(response.body.user.email).toBe(user1.email);
+  expect(response.body.user.username).toBe(user1.username);
+  expect(response.body.user.firstName).toBe(user1.firstName);
+  expect(response.body.user.lastName).toBe(user1.lastName);
+  _id = response.body.user._id;
+});
+
+// Get user tests
+test("Get user", async () => {
+  const response = await request(app)
+    .get(`/auth/${_id}`) 
+    .set('Authorization', 'JWT ' + accessToken);
+
+  expect(response.status).toBe(200);
+  expect(response.body.message).toBe("User found");
+  expect(response.body.user.email).toBe(user1.email);
+  expect(response.body.user.username).toBe(user1.username);
+  expect(response.body.user.firstName).toBe(user1.firstName);
+  expect(response.body.user.lastName).toBe(user1.lastName);
+});
+
+test("Get a non-existing user", async () => {
+  const response = await request(app)
+    .get(`/auth/64b6e28f89a8e1d2f8b7d3c9`) 
+    .set('Authorization', 'JWT ' + accessToken);
+
+  expect(response.status).toBe(404);
+  expect(response.body.message).toBe("User not found");
+});
+
+// Delete user tests
+test("Delete an existing user", async () => {
+
+  const response = await request(app)
+    .delete(`/auth/${_id}`) 
+    .set('Authorization', 'JWT ' + accessToken);
+  expect(response.status).toBe(200);
+  expect(response.body.message).toBe("User deleted successfully");
+  expect(response.body.user._id).toBe(_id.toString());
+  const deletedUser = await userModel.findById(_id);
+  expect(deletedUser).toBeNull();
+});
+
+
+
+
