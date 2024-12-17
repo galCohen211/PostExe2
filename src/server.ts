@@ -4,7 +4,6 @@ const app = express(); //make express work
 import dotenv from "dotenv"; //allows to use dotenv
 dotenv.config(); //use dotenv
 import bodyParser from "body-parser"; //import body-parser module
-import userRoute from "./routes/user-route"; //import user-route module
 import commentRoute from "./routes/comment-route";
 import authRoute from "./routes/auth-route"; //import auth-route module
 import postRoute from "./routes/post-route"; //import auth-route module
@@ -28,7 +27,6 @@ const App = ():Promise<Express> => {
           app.use(bodyParser.urlencoded({ extended: true })); //take the parmetrs from the url
           //connect the routes of user-route to the app.js
           app.use(express.json());
-          app.use("/user", userRoute);
           app.use("/comment", commentRoute);
           app.use("/auth", authRoute);
           app.use("/post", postRoute);

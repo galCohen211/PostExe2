@@ -5,6 +5,60 @@ import jwt from "jsonwebtoken"
 
 class authController {
 
+  static async deleteUser(req: Request, res: Response): Promise<void> {
+    const userId = req.params.id;
+    if (!userId) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    try {
+      const user = await userModel.findByIdAndDelete(userId);
+      res.status(200).json({ message: "User deleted successfully", user: user });
+    }catch (error) {
+    res.status(400).json({ message: error });
+    }
+
+  }
+
+  static async getUser(req: Request, res: Response): Promise<void> {
+    const userId = req.params.id;
+      const user = await userModel.findById(userId);
+      try {
+        if (!user) {
+          res.status(404).json({ message: "User not found" });
+          return;
+        }
+        res.status(200).json({ message:"User found" ,user: user });
+
+    }catch (error) {
+      res.status(400).json({ message: error });
+    }
+  }
+
+  static async updateUser(req: Request, res: Response): Promise<void> {
+    const userId = req.params.id;
+    const { email, username, firstName, lastName, password } = req.body;
+    try {
+      const user = await userModel.findById(userId);
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+      user.email = email;
+      user.username = username;
+      user.firstName = firstName;
+      user.lastName = lastName;
+      if (password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+      }
+      await user.save();
+      res.status(200).json({ message: "User updated successfully", user: user });
+    } catch (error) {
+      res.status(400).json({ message: error });
+    }
+  }
+
   static async signup(req: Request, res: Response): Promise<void> {
     var { email, username, password, firstName, lastName } = req.body;
     
@@ -235,6 +289,10 @@ const token_secret = process.env.TOKEN_SECRET || "DEFAULTSECRETKEY";
       req.query.userId = payload._id;
       next();
   });
+
+
 };
+
+
 
 export default authController;
