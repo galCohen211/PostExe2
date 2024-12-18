@@ -397,12 +397,11 @@ SF:src\models\post-model.ts
 FNF:0
 FNH:0
 DA:1,3
-DA:2,3
-DA:3,3
-DA:14,3
-DA:16,3
-LF:5
-LH:5
+DA:9,3
+DA:21,3
+DA:23,3
+LF:4
+LH:4
 BRF:0
 BRH:0
 end_of_record
