@@ -111,11 +111,26 @@ describe("All user test", () => {
     expect(response.body.message).toBe("Incorrect email or password, please try again");
   });
 
+  test("Refresh token", async () => {
+    const response = await request(app).post(`/auth/refresh_token`).set('authorization', 'JWT ' + refreshToken);
+    expect(response.status).toBe(200);
+  });
+
+  test("Refresh token", async () => {
+    const response = await request(app).post(`/auth/refresh_token`).set('authorization', 'JWT aaaaaaaaaaaaa');
+    expect(response.status).toBe(403);
+  });
+
   //Logout tests
   test("Logout", async ()=>{
-    const response = await request(app).post("/auth/logout").set('Authorization', 'JWT ' + refreshToken);
+    const response = await request(app).post("/auth/logout").set('authorization', 'JWT ' + refreshToken);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Logout successful");
+  });
+
+  test("Logout with invalid token", async ()=>{
+    const response = await request(app).post("/auth/logout").set('authorization', 'JWT aaaaaaaaaaaaaaa');
+    expect(response.status).toBe(400);
   });
 
 // Update user tests
@@ -130,7 +145,7 @@ test("Update user", async () => {
 
   const response = await request(app)
     .put(`/auth/${_id}`)       
-    .set('Authorization', 'JWT ' + accessToken)
+    .set('authorization', 'JWT ' + accessToken)
     .send(updatedUserData);
 
   expect(response.status).toBe(200);
@@ -155,8 +170,25 @@ test("Update user with invalid fields", async () => {
 
   const response = await request(app)
     .put(`/auth/${_id}`)      
-    .set('Authorization', 'JWT ' + accessToken)
+    .set('authorization', 'JWT ' + accessToken)
     .send(invalidUpdateData);
+
+  expect(response.status).toBe(400);  
+});
+
+test("Update user with invalid id", async () => {
+  const updatedUserData = {
+    email: "gal@gmail.com",
+    username: "gal",
+    firstName: "UpdatedGal",
+    lastName: "UpdatedCohen",
+    password: "123456",
+  };
+
+  const response = await request(app)
+    .put(`/auth/45665894}`)      
+    .set('authorization', 'JWT ' + accessToken)
+    .send(updatedUserData);
 
   expect(response.status).toBe(400);  
 });
@@ -179,7 +211,7 @@ test("Create another new user", async ()=>{
 test("Get user", async () => {
   const response = await request(app)
     .get(`/auth/${_id}`) 
-    .set('Authorization', 'JWT ' + accessToken);
+    .set('authorization', 'JWT ' + accessToken);
 
   expect(response.status).toBe(200);
   expect(response.body.message).toBe("User found");
@@ -192,7 +224,7 @@ test("Get user", async () => {
 test("Get a non-existing user", async () => {
   const response = await request(app)
     .get(`/auth/64b6e28f89a8e1d2f8b7d3c9`) 
-    .set('Authorization', 'JWT ' + accessToken);
+    .set('authorization', 'JWT ' + accessToken);
 
   expect(response.status).toBe(404);
   expect(response.body.message).toBe("User not found");
@@ -203,7 +235,7 @@ test("Delete an existing user", async () => {
 
   const response = await request(app)
     .delete(`/auth/${_id}`) 
-    .set('Authorization', 'JWT ' + accessToken);
+    .set('authorization', 'JWT ' + accessToken);
   expect(response.status).toBe(200);
   expect(response.body.message).toBe("User deleted successfully");
   expect(response.body.user._id).toBe(_id.toString());
@@ -211,6 +243,14 @@ test("Delete an existing user", async () => {
   expect(deletedUser).toBeNull();
 });
 
+
+test("Delete user without passing user id", async () => {
+
+  const response = await request(app)
+    .delete(`/auth`) 
+    .set('authorization', 'JWT ' + accessToken);
+  expect(response.status).toBe(404);
+});
 
 
 

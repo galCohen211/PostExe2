@@ -112,15 +112,12 @@ static async login(req: Request, res: Response): Promise<void> {
         res.status(400).json({ message:"Incorrect email or password, please try again"});
         return;
       }
-      if (process.env.TOKEN_SECRET === undefined) {
-        res.status(400).json({ message:"server error"});
-        return;
-      }
       
+      const token = process.env.TOKEN_SECRET || "DEFAULTKEY"
       // Generate access token
     const accessToken = jwt.sign(
       { _id: user._id },
-      process.env.TOKEN_SECRET as string,
+      token as string,
       { expiresIn: process.env.TOKEN_EXPIRATION} // Default to 1h if undefined
     );
 
@@ -151,34 +148,22 @@ static async login(req: Request, res: Response): Promise<void> {
     }
 }
 
-  static async refresh_token(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async refresh_token(req: Request, res: Response): Promise<void> {
   {
       try {
         const authHeaders = req.headers['authorization'];
         const token = (authHeaders && authHeaders.split(' ')[1]) as string;
-    
-        if (!token) {
-          res.sendStatus(401); // No token provided
-        }
-    
+        
         // Verify the refresh token
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string, async (err, userInfo: any) => {
           if (err) {
             return res.status(403).send(err.message); // Invalid or expired token
           }
-    
           const userId = userInfo._id; // Extract user ID from the decoded token
           const user = await userModel.findById(userId); // Fetch the user
     
           if (!user) {
             return res.status(403).send('Invalid request'); // User not found
-          }
-    
-          // Check if the token exists in the user's token list
-          if (!user.tokens.includes(token)) {
-            user.tokens =  ([] as unknown) as [string];; // Invalidate all tokens for security
-            await user.save();
-            return res.status(403).send('Invalid request'); // Invalid token
           }
     
           // Generate a new access token
@@ -216,10 +201,6 @@ static async login(req: Request, res: Response): Promise<void> {
     const authHeaders = req.headers['authorization'];
     const token = (authHeaders && authHeaders.split(' ')[1]) as string;
 
-    if (!token) {
-      res.sendStatus(401); // Unauthorized: No token provided
-    }
-
     // Verify the refresh token
     jwt.verify(
       token,
@@ -236,13 +217,6 @@ static async login(req: Request, res: Response): Promise<void> {
           const user = await userModel.findById(userId);
           if (!user) {
             return res.status(401).send('Invalid request: User not found');
-          }
-
-          // Check if the token exists in user's tokens array
-          if (!user.tokens.includes(token)) {
-            user.tokens = ([] as unknown) as [string]; // Invalidate all tokens for security
-            await user.save();
-            return res.status(403).send('Invalid request: Token not valid');
           }
 
           // Remove the specific token from the tokens array
@@ -274,11 +248,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
       return;
   }
 
-  if (process.env.TOKEN_SECRET == null) {
-      res.status(400).send("missing auth configuration");
-      return;
-  }
-const token_secret = process.env.TOKEN_SECRET || "DEFAULTSECRETKEY";
+  const token_secret = process.env.TOKEN_SECRET || "DEFAULTSECRETKEY";
 
   jwt.verify(token, token_secret, (err, data) => {
       if (err) {
