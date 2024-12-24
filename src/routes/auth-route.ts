@@ -38,5 +38,10 @@ router.post(
   authController.logout
 );
 
+router.post(
+  "/refresh_token",
+  authController.refresh_token
+);
+
 
 export default router;
