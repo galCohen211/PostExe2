@@ -15,7 +15,7 @@ class authController {
       const user = await userModel.findByIdAndDelete(userId);
       res.status(200).json({ message: "User deleted successfully", user: user });
     }catch (error) {
-    res.status(400).json({ message: error });
+    res.status(500).json({ message: error });
     }
 
   }
@@ -31,7 +31,7 @@ class authController {
         res.status(200).json({ message:"User found" ,user: user });
 
     }catch (error) {
-      res.status(400).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
@@ -55,7 +55,7 @@ class authController {
       await user.save();
       res.status(200).json({ message: "User updated successfully", user: user });
     } catch (error) {
-      res.status(400).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
@@ -93,7 +93,7 @@ class authController {
         .status(201)
         .json({ message: "User created successfully", user: user });
     } catch (error) {
-      res.status(400).json({ message: error });
+      res.status(500).json({ message: error });
     }
 }
 
@@ -144,7 +144,7 @@ static async login(req: Request, res: Response): Promise<void> {
     });
   } catch (error) {
     console.error('Error generating tokens:', error);
-    res.status(400).send({ message: 'Internal Server Error' });
+    res.status(500).send({ message: 'Internal Server Error' });
     }
 }
 

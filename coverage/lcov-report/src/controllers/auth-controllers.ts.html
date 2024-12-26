@@ -368,26 +368,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -573,23 +573,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -614,7 +614,7 @@ class authController {
       const user = await userModel.findByIdAndDelete(userId);
       res.status(200).json({ message: "User deleted successfully", user: user });
     }catch (error) {
-<span class="cstat-no" title="statement not covered" >    res.status(400).json({ message: error });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: error });</span>
     }
 &nbsp;
   }
@@ -630,7 +630,7 @@ class authController {
         res.status(200).json({ message:"User found" ,user: user });
 &nbsp;
     }catch (error) {
-<span class="cstat-no" title="statement not covered" >      res.status(400).json({ message: error });</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).json({ message: error });</span>
     }
   }
 &nbsp;
@@ -654,7 +654,7 @@ class authController {
       await user.save();
       res.status(200).json({ message: "User updated successfully", user: user });
     } catch (error) {
-      res.status(400).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 &nbsp;
@@ -692,7 +692,7 @@ class authController {
         .status(201)
         .json({ message: "User created successfully", user: user });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      res.status(400).json({ message: error });</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).json({ message: error });</span>
     }
 }
 &nbsp;
@@ -743,7 +743,7 @@ static async login(req: Request, res: Response): Promise&lt;void&gt; {
     });
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    console.error('Error generating tokens:', error);</span>
-<span class="cstat-no" title="statement not covered" >    res.status(400).send({ message: 'Internal Server Error' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).send({ message: 'Internal Server Error' });</span>
     }
 }
 &nbsp;
@@ -871,7 +871,7 @@ export default authController;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-24T00:11:01.515Z
+                at 2024-12-26T13:17:54.734Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

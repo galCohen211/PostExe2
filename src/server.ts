@@ -1,15 +1,15 @@
-import express, {Express} from "express"; //import express module
+import express, {Express} from "express"; 
 import session from "express-session";
 const app = express(); //make express work
 import dotenv from "dotenv"; //allows to use dotenv
 dotenv.config(); //use dotenv
-import bodyParser from "body-parser"; //import body-parser module
+import bodyParser from "body-parser"; 
 import commentRoute from "./routes/comment-route";
-import authRoute from "./routes/auth-route"; //import auth-route module
-import postRoute from "./routes/post-route"; //import auth-route module
-
-
-import mongoose from "mongoose"; //import mongoose module
+import authRoute from "./routes/auth-route"; 
+import postRoute from "./routes/post-route"; 
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
+import mongoose from "mongoose"; 
 
 const App = ():Promise<Express> => {
   return new Promise<Express>((resolve, reject) => {
@@ -24,8 +24,7 @@ const App = ():Promise<Express> => {
         .connect(process.env.DB_CONNECTION)
         .then(() => {
           app.use(bodyParser.json()); //use body-parser module
-          app.use(bodyParser.urlencoded({ extended: true })); //take the parmetrs from the url
-          //connect the routes of user-route to the app.js
+          app.use(bodyParser.urlencoded({ extended: true })); 
           app.use(express.json());
           app.use("/comment", commentRoute);
           app.use("/auth", authRoute);
@@ -48,9 +47,20 @@ const App = ():Promise<Express> => {
   });
 };
 
-app.get("/about", (req, res) => {
-  res.send("Hello World");
-});
+const options = {
+  definition: {
+  openapi: "3.0.0",
+  info: {
+  title: "Assignment PostExe2 2025 REST API",
+  version: "1.0.0",
+  description: "REST server including authentication using JWT",
+  },
+  servers: [{url: "http://localhost:" + process.env.PORT,},],
+  },
+  apis: ["./src/routes/*.ts"],
+  };
+  const specs = swaggerJsDoc(options);
+  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 
 export default App; 
