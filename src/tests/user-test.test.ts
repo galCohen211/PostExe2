@@ -163,7 +163,6 @@ test("Update user without authorization", async () => {
 });
 
 test("Update user when user not found", async () => {
-  // Create some updated user data
   const updatedUserData = {
     email: "gal@gmail.com",
     username: "gal",
@@ -250,7 +249,6 @@ test("Delete an existing user", async () => {
   const deletedUser = await userModel.findById(_id);
   expect(deletedUser).toBeNull();
 });
-
 
 test("Delete user without passing user id", async () => {
 

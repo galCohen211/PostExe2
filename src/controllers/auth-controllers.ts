@@ -17,8 +17,8 @@ class authController {
     }catch (error) {
     res.status(500).json({ message: error });
     }
-
   }
+
 
   static async getUser(req: Request, res: Response): Promise<void> {
     const userId = req.params.id;
