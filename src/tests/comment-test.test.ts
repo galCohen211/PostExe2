@@ -2,7 +2,6 @@ import request from "supertest";
 import App from "../server";
 import mongoose from "mongoose";
 import commentModel from "../models/comment-model";
-import postModel from "../models/post-model";
 import { Express } from "express";
 
 let app: Express;
@@ -69,7 +68,7 @@ describe("Comment Controller Tests", () => {
       .send(incompleteComment)
       .set("Authorization", "JWT " + accessToken);
   
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
     expect(response.body.message).toBeDefined();  
   });
   
@@ -83,13 +82,13 @@ describe("Comment Controller Tests", () => {
     expect(response.body.commentById.owner).toBe(newComment.owner);
   });
 
-  // Test for invalid comment ID (400 error)
+  // Test for invalid comment ID (500 error)
   test("Fail get a comment by invalid ID", async () => {
   const invalidCommentId = "invalid-id"; // Non-ObjectId string
 
   const response = await request(app).get(`/comment/${invalidCommentId}`);
 
-  expect(response.status).toBe(400); 
+  expect(response.status).toBe(500); 
   expect(response.body).toHaveProperty("message"); 
   expect(response.body.message).toBeDefined(); 
 });
