@@ -10,7 +10,7 @@ class commentController {
             res.status(200).json({commentByPostId});
             return;
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }
@@ -21,7 +21,7 @@ class commentController {
             res.status(200).json({comments});
             return;
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }
@@ -33,7 +33,7 @@ class commentController {
             res.status(201).send(newComment);
             return;
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
 
@@ -45,7 +45,7 @@ class commentController {
             const commentById = await comment.findById(commentId);
             res.status(200).json({commentById});
          }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
          }
 
@@ -59,7 +59,7 @@ class commentController {
             const updateContent = await comment.findByIdAndUpdate(id, content, {new: true});  
             res.status(200).json({message:"Comment updated" ,updateContent});
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }
@@ -70,7 +70,7 @@ class commentController {
             const deleteComment =   await comment.findByIdAndDelete(id);
             res.status(200).json({message:"Comment deleted", deleteComment});
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }

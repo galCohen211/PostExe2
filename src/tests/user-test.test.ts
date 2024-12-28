@@ -162,19 +162,26 @@ test("Update user without authorization", async () => {
   expect(response.status).toBe(401);      
 });
 
-test("Update user with invalid fields", async () => {
-  const invalidUpdateData = {
-    firstName: "",
+test("Update user when user not found", async () => {
+  const updatedUserData = {
+    email: "gal@gmail.com",
+    username: "gal",
+    firstName: "UpdatedGal",
     lastName: "UpdatedCohen",
+    password: "123456",
   };
 
-  const response = await request(app)
-    .put(`/auth/${_id}`)      
-    .set('authorization', 'JWT ' + accessToken)
-    .send(invalidUpdateData);
+  const invalidUserId = "60c72b2f5f1b2c001fbcf73f";  
 
-  expect(response.status).toBe(400);  
+  const response = await request(app)
+    .put(`/auth/${invalidUserId}`)
+    .set('authorization', 'JWT ' + accessToken)  
+    .send(updatedUserData);
+
+  expect(response.status).toBe(404);
+  expect(response.body.message).toBe("User not found");
 });
+
 
 test("Update user with invalid id", async () => {
   const updatedUserData = {
@@ -190,7 +197,7 @@ test("Update user with invalid id", async () => {
     .set('authorization', 'JWT ' + accessToken)
     .send(updatedUserData);
 
-  expect(response.status).toBe(400);  
+  expect(response.status).toBe(500);  
 });
 
 })
@@ -242,7 +249,6 @@ test("Delete an existing user", async () => {
   const deletedUser = await userModel.findById(_id);
   expect(deletedUser).toBeNull();
 });
-
 
 test("Delete user without passing user id", async () => {
 

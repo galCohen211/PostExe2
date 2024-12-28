@@ -2,7 +2,6 @@ import request from "supertest";
 import App from "../server";
 import mongoose from "mongoose";
 import commentModel from "../models/comment-model";
-import postModel from "../models/post-model";
 import { Express } from "express";
 
 let app: Express;
@@ -58,6 +57,22 @@ describe("Comment Controller Tests", () => {
     commentId = response.body._id; 
   });
 
+  // Error when creating a comment with missing fields (400 error)
+  test("Fail to create a comment with missing fields", async () => {
+    const incompleteComment = {
+      content: "This is a comment without a postId.",
+    };
+  
+    const response = await request(app)
+      .post("/comment/")
+      .send(incompleteComment)
+      .set("Authorization", "JWT " + accessToken);
+  
+    expect(response.status).toBe(500);
+    expect(response.body.message).toBeDefined();  
+  });
+  
+
   // Get a comment by ID
   test("Get a comment by ID", async () => {
     const response = await request(app).get(`/comment/${commentId}`);
@@ -66,6 +81,18 @@ describe("Comment Controller Tests", () => {
     expect(response.body.commentById._id).toBe(commentId);
     expect(response.body.commentById.owner).toBe(newComment.owner);
   });
+
+  // Test for invalid comment ID (500 error)
+  test("Fail get a comment by invalid ID", async () => {
+  const invalidCommentId = "invalid-id"; // Non-ObjectId string
+
+  const response = await request(app).get(`/comment/${invalidCommentId}`);
+
+  expect(response.status).toBe(500); 
+  expect(response.body).toHaveProperty("message"); 
+  expect(response.body.message).toBeDefined(); 
+});
+
 
   // Get comments by post ID
   test("Get comments by post ID", async () => {
