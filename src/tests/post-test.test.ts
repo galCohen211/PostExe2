@@ -36,7 +36,7 @@ describe("All post tests", () => {
    
   //Signup tests
     test("Create a new post", async ()=>{
-      const response = await request(app).post("/post/").send(new_post).set('Authorization', 'JWT ' + accessToken);
+      const response = await request(app).post("/post/").send(new_post).set('auth', 'JWT ' + accessToken);
       expect(response.status).toBe(201);
       expect(response.body.title).toBe("Oriya new post");
       expect(response.body.content).toBe("this is Oriya's post");
@@ -55,14 +55,14 @@ describe("All post tests", () => {
   });
 
   test("update a post", async ()=>{
-    const response = await request(app).put("/post/" + postId).send("This is the new content").set('Authorization', 'JWT ' + accessToken);    
+    const response = await request(app).put("/post/" + postId).send("This is the new content").set('auth', 'JWT ' + accessToken);    
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Post updated");
   });
 
 
   test("Delete post", async ()=>{
-    const response = await request(app).delete("/post/" + postId).set('Authorization', 'JWT ' + accessToken);
+    const response = await request(app).delete("/post/" + postId).set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Post deleted");
 

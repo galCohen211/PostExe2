@@ -290,13 +290,58 @@ router.post(
  */
 
 
-router.post(
-  "/refresh_token",
-  authController.refresh_token
-);
-
-
 router.post("/refresh_token", authController.refresh_token);
+
+/**
+ * @swagger
+ * /auth/refresh_token:
+ *   post:
+ *     summary: Gets a new refresh token.
+ *     tags:
+ *       - User
+ *     description: Gets a new refresh token.
+ *     parameters:
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
+ *     responses:
+ *       200:
+ *         description: new refresh token was generated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                   description: JWT access token for authenticated requests
+ *                 refreshToken:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                   description: JWT refresh token for requesting new access tokens
+ *       403:
+ *         description: Invalid request or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: invalid token
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: Internal Server Error
+ */
 
 
 /**
