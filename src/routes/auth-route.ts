@@ -246,6 +246,14 @@ router.post(
  *     operationId: logout
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     responses:
  *       '200':
  *         description: Successfully logged out
@@ -425,6 +433,13 @@ router.post("/refresh_token", authController.refresh_token);
  *         schema:
  *           type: string
  *           example: 60d0fe4f5311236168a109ca
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -477,6 +492,13 @@ router.post("/refresh_token", authController.refresh_token);
  *         schema:
  *           type: string
  *           example: 60d0fe4f5311236168a109ca
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     requestBody:
  *       description: The user details to update.
  *       required: true
