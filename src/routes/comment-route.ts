@@ -83,6 +83,14 @@ router.post("/", authMiddleware, commentController.createComment);
  *       - Comment
  *     security:
  *       - bearerAuth: []  
+ *     parameters:
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     requestBody:
  *       required: true
  *       content:
@@ -201,6 +209,13 @@ router.put("/:id", authMiddleware,  commentController.updateComment);
  *     security:
  *       - bearerAuth: []  
  *     parameters:
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *       - in: path
  *         name: id
  *         required: true
@@ -261,6 +276,13 @@ router.delete("/:id", authMiddleware, commentController.deleteComment);
  *         schema:
  *           type: string
  *           example: '60c72b2f5f1b2c001fbcf73f'
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     responses:
  *       '200':
  *         description: Successfully deleted the comment

@@ -42,6 +42,14 @@ router.post("/", authMiddleware, postController.createPost);
  *       - Post
  *     security:
  *       - bearerAuth: []  # Specifies that a Bearer token is required for authentication
+ *     parameters:
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     requestBody:
  *       required: true
  *       content:
@@ -205,6 +213,13 @@ router.put("/:id", authMiddleware, postController.updatePost);
  *         schema:
  *           type: string
  *           example: "60d4b1f9c45c8c001f87f635"
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     requestBody:
  *       required: true
  *       content:
@@ -278,6 +293,13 @@ router.delete("/:id", authMiddleware, postController.deletePost);
  *         schema:
  *           type: string
  *           example: "60d4b1f9c45c8c001f87f635"
+ *       - in: header
+ *         name: auth
+ *         required: true
+ *         description: The current refresh token of the user.
+ *         schema:
+ *           type: string
+ *           example: JWT 60d0fe4f5311236168a109ca
  *     security:
  *       - bearerAuth: []  
  *     responses:

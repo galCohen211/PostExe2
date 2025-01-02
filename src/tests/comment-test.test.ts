@@ -47,7 +47,7 @@ describe("Comment Controller Tests", () => {
     const response = await request(app)
       .post("/comment/")
       .send(newComment)
-      .set("Authorization", "JWT " + accessToken);
+      .set("auth", "JWT " + accessToken);
 
     expect(response.status).toBe(201);
     expect(response.body.owner).toBe(newComment.owner);
@@ -66,7 +66,7 @@ describe("Comment Controller Tests", () => {
     const response = await request(app)
       .post("/comment/")
       .send(incompleteComment)
-      .set("Authorization", "JWT " + accessToken);
+      .set("auth", "JWT " + accessToken);
   
     expect(response.status).toBe(500);
     expect(response.body.message).toBeDefined();  
@@ -119,7 +119,7 @@ describe("Comment Controller Tests", () => {
     const response = await request(app)
       .put(`/comment/${commentId}`)
       .send(updatedContent)
-      .set("Authorization", "JWT " + accessToken);
+      .set("auth", "JWT " + accessToken);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Comment updated");
@@ -130,7 +130,7 @@ describe("Comment Controller Tests", () => {
   test("Delete a comment", async () => {
     const response = await request(app)
       .delete(`/comment/${commentId}`)
-      .set("Authorization", "JWT " + accessToken);
+      .set("auth", "JWT " + accessToken);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Comment deleted");
