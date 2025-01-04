@@ -9,7 +9,7 @@ class postController {
             res.status(200).json({posts});
             return;
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }
@@ -21,7 +21,7 @@ class postController {
             res.status(201).send(newPost);
             return;
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
 
@@ -33,7 +33,7 @@ class postController {
             const postById = await post.findById(postId);
             res.status(200).json({postById});
          }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
          }
 
@@ -47,7 +47,7 @@ class postController {
             const updateContent = await post.findByIdAndUpdate(postId, content, {new: true});  
             res.status(200).json({message:"Post updated" ,updateContent});
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }
@@ -58,7 +58,7 @@ class postController {
             const deletePost =   await post.findByIdAndDelete(postId);
             res.status(200).json({message:"Post deleted", deletePost});
         }catch(error){
-            res.status(400).json({message: error});
+            res.status(500).json({message: error});
             return;
         }
     }
