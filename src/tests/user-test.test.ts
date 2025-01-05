@@ -123,7 +123,7 @@ describe("All user test", () => {
 
   //Logout tests
   test("Logout", async ()=>{
-    const response = await request(app).post("/auth/logout").set('auth', 'JWT ' + refreshToken);
+    const response = await request(app).post("/auth/logout").set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Logout successful");
   });

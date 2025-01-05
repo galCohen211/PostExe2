@@ -48,7 +48,7 @@ describe("All post tests", () => {
   });
 
   test("Create a new post without all fields", async ()=>{
-    const response = await request(app).post("/post/").send(incomplete_post).set('Authorization', 'JWT ' + accessToken);
+    const response = await request(app).post("/post/").send(incomplete_post).set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(500);
 });
 
@@ -74,7 +74,7 @@ describe("All post tests", () => {
   });
 
   test("update a post with invalid id", async ()=>{
-    const response = await request(app).put("/post/aaaaaa").send("This is the new content").set('Authorization', 'JWT ' + accessToken);    
+    const response = await request(app).put("/post/aaaaaa").send("This is the new content").set('auth', 'JWT ' + accessToken);    
     expect(response.status).toBe(500);
   });
 
@@ -86,7 +86,7 @@ describe("All post tests", () => {
   });
 
   test("Delete post with invalid id", async ()=>{
-    const response = await request(app).delete("/post/aaaaaa").set('Authorization', 'JWT ' + accessToken);
+    const response = await request(app).delete("/post/aaaaaa").set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(500);
   });
 })
