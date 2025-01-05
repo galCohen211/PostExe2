@@ -204,7 +204,7 @@ static async login(req: Request, res: Response): Promise<void> {
     // Verify the refresh token
     jwt.verify(
       token,
-      process.env.REFRESH_TOKEN_SECRET as string,
+      process.env.TOKEN_SECRET as string,
       async (err, userInfo: any) => {
         if (err) {
           return res.status(400).send(err.message); // Forbidden: Invalid or expired token

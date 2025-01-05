@@ -46,7 +46,7 @@ router.post("/", authMiddleware, postController.createPost);
  *       - in: header
  *         name: auth
  *         required: true
- *         description: The current refresh token of the user.
+ *         description: The current access token of the user.
  *         schema:
  *           type: string
  *           example: JWT 60d0fe4f5311236168a109ca
@@ -216,7 +216,7 @@ router.put("/:id", authMiddleware, postController.updatePost);
  *       - in: header
  *         name: auth
  *         required: true
- *         description: The current refresh token of the user.
+ *         description: The current access token of the user.
  *         schema:
  *           type: string
  *           example: JWT 60d0fe4f5311236168a109ca
@@ -296,7 +296,7 @@ router.delete("/:id", authMiddleware, postController.deletePost);
  *       - in: header
  *         name: auth
  *         required: true
- *         description: The current refresh token of the user.
+ *         description: The current access token of the user.
  *         schema:
  *           type: string
  *           example: JWT 60d0fe4f5311236168a109ca

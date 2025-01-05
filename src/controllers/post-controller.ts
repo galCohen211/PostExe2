@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import post from "../models/post-model";
+import comment from "../models/comment-model";
 
 class postController {
 
@@ -55,8 +56,9 @@ class postController {
     static async deletePost(req: Request, res: Response): Promise<void> {
         const postId = req.params.id;
         try{
-            const deletePost =   await post.findByIdAndDelete(postId);
-            res.status(200).json({message:"Post deleted", deletePost});
+            const deletePost = await post.findByIdAndDelete(postId);
+            const deletedComments = await comment.deleteMany({ postId: postId });
+            res.status(200).json({message:"Post deleted", deletePost, deletedComments});
         }catch(error){
             res.status(500).json({message: error});
             return;
