@@ -312,7 +312,7 @@ router.post("/refresh_token", authController.refresh_token);
  *       - in: header
  *         name: auth
  *         required: true
- *         description: The current access token of the user.
+ *         description: The current refresh token of the user.
  *         schema:
  *           type: string
  *           example: JWT 60d0fe4f5311236168a109ca
