@@ -151,7 +151,7 @@ static async login(req: Request, res: Response): Promise<void> {
   static async refresh_token(req: Request, res: Response): Promise<void> {
   {
       try {
-        const authHeaders = req.headers['authorization'];
+        const authHeaders = req.headers['auth'] as string;
         const token = (authHeaders && authHeaders.split(' ')[1]) as string;
         
         // Verify the refresh token
@@ -198,13 +198,13 @@ static async login(req: Request, res: Response): Promise<void> {
   }
   static async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const authHeaders = req.headers['authorization'];
+    const authHeaders = req.headers['auth'] as string;
     const token = (authHeaders && authHeaders.split(' ')[1]) as string;
 
     // Verify the refresh token
     jwt.verify(
       token,
-      process.env.REFRESH_TOKEN_SECRET as string,
+      process.env.TOKEN_SECRET as string,
       async (err, userInfo: any) => {
         if (err) {
           return res.status(400).send(err.message); // Forbidden: Invalid or expired token
@@ -241,7 +241,7 @@ type TokenPayload = {
 };
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.headers['auth'] as string;
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) {
       res.status(401).send("Token not found");

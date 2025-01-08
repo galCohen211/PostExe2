@@ -67,7 +67,7 @@ class commentController {
     static async deleteComment(req: Request, res: Response): Promise<void> {
         const id = req.params.id;
         try{
-            const deleteComment =   await comment.findByIdAndDelete(id);
+            const deleteComment = await comment.findByIdAndDelete(id);
             res.status(200).json({message:"Comment deleted", deleteComment});
         }catch(error){
             res.status(500).json({message: error});

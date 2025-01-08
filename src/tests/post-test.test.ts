@@ -39,7 +39,7 @@ const incomplete_post = {
 describe("All post tests", () => {
    
     test("Create a new post", async ()=>{
-      const response = await request(app).post("/post/").send(new_post).set('Authorization', 'JWT ' + accessToken);
+      const response = await request(app).post("/post/").send(new_post).set('auth', 'JWT ' + accessToken);
       expect(response.status).toBe(201);
       expect(response.body.title).toBe("Oriya new post");
       expect(response.body.content).toBe("this is Oriya's post");
@@ -48,7 +48,7 @@ describe("All post tests", () => {
   });
 
   test("Create a new post without all fields", async ()=>{
-    const response = await request(app).post("/post/").send(incomplete_post).set('Authorization', 'JWT ' + accessToken);
+    const response = await request(app).post("/post/").send(incomplete_post).set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(500);
 });
 
@@ -68,25 +68,25 @@ describe("All post tests", () => {
   });
 
   test("update a post", async ()=>{
-    const response = await request(app).put("/post/" + postId).send("This is the new content").set('Authorization', 'JWT ' + accessToken);    
+    const response = await request(app).put("/post/" + postId).send("This is the new content").set('auth', 'JWT ' + accessToken);    
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Post updated");
   });
 
   test("update a post with invalid id", async ()=>{
-    const response = await request(app).put("/post/aaaaaa").send("This is the new content").set('Authorization', 'JWT ' + accessToken);    
+    const response = await request(app).put("/post/aaaaaa").send("This is the new content").set('auth', 'JWT ' + accessToken);    
     expect(response.status).toBe(500);
   });
 
 
   test("Delete post", async ()=>{
-    const response = await request(app).delete("/post/" + postId).set('Authorization', 'JWT ' + accessToken);
+    const response = await request(app).delete("/post/" + postId).set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Post deleted");
   });
 
   test("Delete post with invalid id", async ()=>{
-    const response = await request(app).delete("/post/aaaaaa").set('Authorization', 'JWT ' + accessToken);
+    const response = await request(app).delete("/post/aaaaaa").set('auth', 'JWT ' + accessToken);
     expect(response.status).toBe(500);
   });
 })
